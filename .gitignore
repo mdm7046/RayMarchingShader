@@ -4,3 +4,5 @@ out
 .idea
 .vs
 .vscode
+/glm
+/cmake-build-debug
