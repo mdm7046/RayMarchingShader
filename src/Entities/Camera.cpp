@@ -39,6 +39,8 @@ void Camera::setShaderUniforms(sf::Shader &shader) const {
     Utils::setUnif(shader, "ambientLight", wrld.ambientLight);
     Utils::setUnif(shader, "skyColor", wrld.skyColor);
     Utils::setUnif(shader, "groundColor", wrld.groundColor);
+    Utils::setUnif(shader, "sunColor.specularEmit", wrld.sunColor.specularColor);
+    Utils::setUnif(shader, "sunColor.diffuseEmit", wrld.sunColor.diffuseColor);
 
     //set camera uniforms
     Utils::setUnif(shader, "imgPlaneBottomLeft", clipPlaneBottomLeft);

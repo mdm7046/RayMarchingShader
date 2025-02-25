@@ -5,10 +5,12 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include "../cmake-build-debug/_deps/sfml-src/extlibs/headers/glad/include/glad/gl.h"
 #include "../glm/vec3.hpp"
 #include "../glm/vec4.hpp"
 #include "../glm/ext/matrix_transform.hpp"
 #include "SFML/Graphics/Shader.hpp"
+#include "SFML/Graphics/Transform.hpp"
 
 class Utils {
 public:
@@ -40,6 +42,16 @@ public:
 
     static void setUnif(sf::Shader &shader, const std::string &name, const glm::vec3 &vec) {
         shader.setUniform(name, sf::Glsl::Vec3(vec.x, vec.y, vec.z));
+    }
+
+    static void setUnif(sf::Shader &shader, const std::string &name, const glm::mat3x3 &mat) {
+        const float stream[] = {mat[0][0], mat[0][1], mat[0][2], mat[1][0], mat[1][1], mat[1][2], mat[2][0], mat[2][1], mat[2][2]};
+        shader.setUniform(name, sf::Glsl::Mat3(stream));
+    }
+
+    static void setUnif(sf::Shader &shader, const std::string &name, const glm::mat4x4 &mat) {
+        const float stream[] = {mat[0][0], mat[0][1], mat[0][2], mat[0][3], mat[1][0], mat[1][1], mat[1][2], mat[1][3], mat[2][0], mat[2][1], mat[2][2], mat[2][3], mat[3][0], mat[3][1], mat[3][2], mat[3][3]};
+        shader.setUniform(name, sf::Glsl::Mat4(stream));
     }
 };
 

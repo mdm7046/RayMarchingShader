@@ -10,7 +10,6 @@
 
 #include "../../glm/vec3.hpp"
 #include "../../glm/vec4.hpp"
-#include "SFML/Graphics/Shader.hpp"
 
 inline extern const int windowWidth = 300;
 inline extern const int windowHeight = 300;

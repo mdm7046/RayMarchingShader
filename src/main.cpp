@@ -27,22 +27,9 @@ int main() {
 
     World world = {{0, -1, 0}, Light::LightColor::DimWhite, {50, 50, 50}};
 
-    // world.addObject(new Ball({0, 1.5, 0}, 1, Object::Material::BluePlastic));
-    // world.addObject(new Ball({0, 3, 0}, 0.25, Object::Material::WhitePlastic));
-    // Box testBox = {{0, 0, 0}, {}, {10, 1, 10}, Object::Material::Metal};
-    // world.addObject(&testBox);
-
-    // world.addObject(new Ball({1.5,0,0}, 1, Object::Material::Metal));
-    // world.addObject(new Ball({-1.5,0,0}, 1, Object::Material::BluePlastic));
-
-    // glm::dvec3 p1 = {2.5, 2.5, 2.5};
-    // glm::dvec3 p2 = {-2.5, -2.5, 2.5};
-    // glm::dvec3 p3 = {2.5, -2.5, 2.5};
-    // Plane testPlane = {p1, p2, p3, Object::Material::Metal};
-    // world.addObject(&testPlane);
-    // world.addObject(new Plane(p1, p2, p4, Object::Material::BluePlastic));
-
-    // world.addLight(new Light({5, 5, 5}, Light::LightColor::Cyan));
+    auto b = Ball({0, 2, 0}, 2, Object::Material::WhitePlastic);
+    world.addObject(&b);
+    world.addObject(new Ball({0, -1, 0}, 1, Object::Material::WhitePlastic));
 
     Camera eye = {{0, 0, -5}, {0, 0, 0}, 0.1, 0.5*PI, &world};
 
@@ -115,8 +102,6 @@ int main() {
         window.draw(cover, &shader);
         window.draw(fpsCounter);
         window.display();
-
-        // testPlane.transform({0, 0, 0}, {0.01, 0, 0}, {1, 1, 1});
     }
 
     return 0;

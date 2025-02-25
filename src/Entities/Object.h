@@ -33,8 +33,8 @@ public:
 
     virtual ~Object() = default;
 
-    static unsigned int getType() { return -1; }
-    virtual void getMatrices(glm::mat4x4 &WorldToObj, glm::mat3x3 &ObjectToWorldNoTrans, glm::vec3 &scaleFactors) { }
+    virtual unsigned int getType() { return -1; }
+    virtual void getMatrices(glm::mat4x4 &WorldToObj, glm::mat3x3 &ObjectToWorldRot, glm::vec3 &scaleFactors) { }
     virtual Material objMaterial() const { return {}; }
 
     virtual void transform(const glm::vec3 &translation, const glm::vec3 &rotation, const glm::vec3 &scaleFactors) { }
@@ -44,37 +44,38 @@ public:
 // a sphere, with a position, radius, and uniform color
 class Ball : public Object {
 private:
-    glm::vec3 pos, radii, rotation;
+    glm::vec3 pos, rotation;
+    float radius;
 
     Material material;
 public:
     Ball(const glm::vec3 &pos, const float radius, const Material &material) :
-        pos(pos), radii(glm::vec3(radius, radius, radius)), rotation(glm::vec3(0, 0, 0)), material(material) { }
+        pos(pos), radius(radius), rotation(glm::vec3(0, 0, 0)), material(material) { }
 
-    static unsigned int getType() { return 0; }
+    unsigned int getType() override { return 1; }
 
     void transform(const glm::vec3 &translation, const glm::vec3 &rot, const glm::vec3 &scaleFactors) override {
+        assert(scaleFactors.x == scaleFactors.y && scaleFactors.x == scaleFactors.z);
         pos += translation;
-        radii *= scaleFactors;
+        radius *= scaleFactors.x;
         rotation += rot;
     }
 
     void move(const glm::vec3 &translation, const glm::vec3 &rot, const glm::vec3 &scaleFactors) override {
+        assert(scaleFactors.x == scaleFactors.y && scaleFactors.x == scaleFactors.z);
         pos = translation;
-        radii = scaleFactors;
+        radius = scaleFactors.x;
         rotation = rot;
     }
 
-    void getMatrices(glm::mat4x4 &WorldToObj, glm::mat3x3 &ObjectToWorldNoTrans, glm::vec3 &scaleFactors) override {
+    void getMatrices(glm::mat4x4 &WorldToObj, glm::mat3x3 &ObjectToWorldRot, glm::vec3 &scaleFactors) override {
         const glm::mat4x4 invT = glm::translate(glm::identity<glm::mat4x4>(), -pos);
         const glm::mat4x4 R = Utils::rotate(glm::identity<glm::mat4x4>(), rotation);
         const glm::mat4x4 invR = Utils::rotateInverse(glm::identity<glm::mat4x4>(), rotation);
-        const glm::mat4x4 invS = glm::scale(glm::identity<glm::mat4x4>(), glm::vec3(1, 1, 1) / radii);
-        const glm::mat4x4 S = glm::scale(glm::identity<glm::mat4x4>(), radii);
 
-        WorldToObj = invS * invR * invT;
-        ObjectToWorldNoTrans = R * S;
-        scaleFactors = radii;
+        WorldToObj =  invR * invT;
+        ObjectToWorldRot = R;
+        scaleFactors = glm::vec3(radius, radius, radius);
     }
 
     Material objMaterial() const override { return material; }

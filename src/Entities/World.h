@@ -26,7 +26,7 @@ public:
     World(const glm::dvec3 &sunDirection, const Light::LightColor &sunColor, const sf::Color ambient)
         : sunDirection(normalize(sunDirection)), sunColor(sunColor) {
         objects = std::pmr::list<Object*>();
-        lights = std::pmr::list<Light*>({nullptr}); //sun is represented as nullptr
+        lights = std::pmr::list<Light*>();
         ambientLight = glm::vec4(ambient.r, ambient.g, ambient.b, ambient.a) / 255.f;
     }
     ~World();
